@@ -21,7 +21,7 @@ type HelloResponse struct {
 
 func echoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		http.Error(w, "Method is not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
