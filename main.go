@@ -31,6 +31,12 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.Message == "RED" {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	response := EchoResponse{Echo: req.Message}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
