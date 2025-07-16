@@ -15,6 +15,10 @@ type EchoResponse struct {
 	Echo string `json:"echo"`
 }
 
+type HelloResponse struct {
+	Message string `json:"message"`
+}
+
 func echoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -32,6 +36,23 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req EchoRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	response := HelloResponse{Message: "Hello " + req.Message}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprint(w, "OK")
@@ -39,6 +60,7 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/echo", echoHandler)
+	http.HandleFunc("/hello", helloHandler)
 	http.HandleFunc("/health", healthHandler)
 
 	port := ":8080"
