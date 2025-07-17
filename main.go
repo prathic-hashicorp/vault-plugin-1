@@ -46,7 +46,7 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if req.Message == "TREE" {
+	if req.Message == "POWER" {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		return
