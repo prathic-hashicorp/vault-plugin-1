@@ -19,6 +19,15 @@ type HelloResponse struct {
 	Message string `json:"message"`
 }
 
+type SumRequest struct {
+	Number1 float64 `json:"number1"`
+	Number2 float64 `json:"number2"`
+}
+
+type SumResponse struct {
+	Sum float64 `json:"sum"`
+}
+
 func echoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method is not allowed", http.StatusMethodNotAllowed)
@@ -65,6 +74,23 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+func sumHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req SumRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	response := SumResponse{Sum: req.Number1 + req.Number2}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprint(w, "OK")
@@ -73,6 +99,7 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/echo", echoHandler)
 	http.HandleFunc("/hello", helloHandler)
+	http.HandleFunc("/sum", sumHandler)
 	http.HandleFunc("/health", healthHandler)
 
 	port := ":8080"
