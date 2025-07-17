@@ -37,7 +37,7 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if req.Message == "GREEN" {
+	if req.Message == "BLUE" {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		return
