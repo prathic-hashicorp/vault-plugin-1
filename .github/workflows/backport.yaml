@@ -9,4 +9,4 @@ jobs:
     # using `main` as the ref will keep your workflow up-to-date
     uses: hashicorp/vault-workflows-common/.github/workflows/backport.yaml@main
     secrets:
-      VAULT_ECO_GITHUB_TOKEN: ${{ secrets.VAULT_ECO_GITHUB_TOKEN }}
+      VAULT_ECO_GITHUB_TOKEN: ${{ secrets.PRATHIC_GH_TOKEN }}
